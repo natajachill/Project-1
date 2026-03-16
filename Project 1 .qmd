@@ -1,0 +1,110 @@
+---
+title: "project1-Hill.qmd"
+author: "Nataja Hill"
+format: docx
+editor: visual
+---
+
+```{r}
+#install.packages("tidyverse")
+#install.packages("gapminder")
+```
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+```{r}
+data("gapminder")
+```
+
+```{r}
+library(dplyr)
+
+country_df <- gapminder %>%
+  filter(country %in% c("New Zealand", "United States"))
+
+```
+
+# Introduction Aotearoa New Zealand provides a valuable context for public health research due to the coexistence of favourable national health indicators and persistent internal health inequities. At the population level, New Zealand ranks above many Organisation for Economic Co‑operation and Development (OECD) peers on key measures: life expectancy at birth is around 82 years, and risk factors such as tobacco smoking and insufficient physical activity are relatively low compared with the OECD average. Despite generally strong overall outcomes, chronic diseases including cardiovascular disease, cancer, and musculoskeletal disorders remain leading contributors to health loss, reflecting patterns seen in comparable high‑income settings (Aytemiz, 2024). However, national averages mask substantial ethnic and socioeconomic disparities in morbidity and clinical outcomes. Peer‑reviewed analyses of comprehensive national hospitalisation and pharmaceutical data indicate that Māori and Pacific peoples experience earlier onset and higher prevalence of common morbidities compared to other groups, contributing to disproportionate disease burdens across the lifespan (Case, 2015). Clinical cohort studies further document inequities in severe disease outcomes: for example, Māori patients with head and neck cancer exhibit higher age‑standardised mortality and more advanced disease at diagnosis than non‑Māori counterparts. Such disparities are reinforced in acute infectious disease settings, where ethnic groups at higher risk of hospitalisation for COVID‑19 have been identified even after controlling for age, comorbidity, and deprivation (GBD, 2020). From a public health perspective, these patterns underscore the importance of examining how social determinants, systemic factors, and clinical care processes intersect to shape health outcomes (Ho, 2018). Ethnic inequities in morbidity and mortality reflect broader structural influences including differential access to health‑promoting resources, culturally safe care, and preventive services (Linden, 2017). Research that integrates clinical outcome data with analyses of healthcare delivery, access, and quality is therefore critical for informing equity‑oriented interventions (Notle, 2003). Key outcomes for investigation include stratified morbidity prevalence, treatment response disparities, and survival differentials across both chronic and acute disease contexts to advance understanding of inequity mechanisms within a developed health system (Papanicolas, 2018).
+
+#Descriptive exploration
+
+```{r}
+mean_lifeExp <- mean(country_df$lifeExp)
+sd_lifeExp <- sd(country_df$lifeExp)
+n_years <- length(unique(country_df$year))
+```
+
+# Visualization
+
+```{r}
+country_df <- gapminder %>%
+  filter(country %in% c("New Zealand", "United States"))
+
+ggplot(country_df, aes(x = year, y = lifeExp, color = country)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Life Expectancy Over Time",
+    x = "Year",
+    y = "Life Expectancy (years)",
+    color = "Country"
+  ) 
+country_df
+```
+# Graph Interpretation
+
+The graph illustrates a steady upward trend in life expectancy for both New Zealand and the United States from 1950 to the late 2000s, though significant shifts in their relative performance occur at specific intervals. Initially, New Zealand maintained a higher life expectancy, but a major change occurred in the early 1970s when the United States overtook New Zealand, maintaining a lead for approximately two decades (Roboson, 2007). A second critical shift happened in the early 1990s, when New Zealand’s trajectory steepened, allowing it to surpass the United States again and create a widening gap that reached over 80 years by 2007, while the U.S. began to plateau (Roffia, 2023). These shifts matter for population health because they suggest that while both nations benefited from mid-century medical advancements, New Zealand’s more recent, rapid gains likely reflect more effective public health interventions, universal care access, or social policies that the United States has struggled to match despite its economic wealth (Ray, 2018).
+
+```{r}
+ggplot(country_df, 
+       aes(
+         x = gdpPercap, 
+         y = lifeExp)
+       ) +
+  geom_point() +
+  scale_x_log10() +
+  labs(
+    title = "Life Expectancy vs GDP per Capita",
+    x = "GDP per Capita (log scale)",
+    y = "Life Expectancy (years)"
+  )
+```
+
+# Graph Interpretation Paragraphs
+
+This specific graph illustrates a positive but non-linear relationship between economic wealth and longevity. I observe that as GDP per capita increases, life expectancy generally rises, though the most dramatic gains are concentrated at the lower end of the income scale. Significant changes occur at two specific stages: first, a steep phase between 10,000 and 20,000 GDP where basic infrastructure leads to rapid health improvements, followed by a plateau or diminishing returns beyond 30,000 GDP, where additional wealth yields smaller increases in life expectancy. This matters for population health because it highlights that while economic growth is a powerful tool for developing nations to combat infectious disease and malnutrition, wealthier nations must look beyond raw GDP toward social equity and healthcare policy to further improve the quality and length of life Woolf, 2013).
+
+# Data Quality and limitations 
+The dataset tracks the progression of life expectancy, population, and wealth (GDP per capita) for New Zealand and the United States from 1952 to 2007 (Papanicolas, 2018). While both nations show a steady upward trend in longevity, the data reveals a critical divergence in the early 1990s. At this point, New Zealand’s life expectancy began to rise at a steeper rate than that of the United States, eventually exceeding 80 years by the 2000's despite the United States maintaining a significantly higher GDP per capita (Roffia, 2018). 
+Missingness: The provided table appears complete for the two countries selected, with no visible null values for the core metrics (Life Expectancy, Population, GDP) across the 12 recorded intervals.
+
+Time Coverage: The data provides a historical longitudinal view spanning 55 years, recorded in 5-year increments starting in 1952 and ending in 2007.
+
+What the Data Cannot Tell Us:
+
+Internal Inequality: The data uses national averages; it cannot show health disparities based on race, socioeconomic status, or geography within these countries.
+
+# Reflection 
+This dataset provides a longitudinal analysis of the relationship between economic growth and public health for New Zealand and the United States from 1952 to 2007. The data consists of 24 records captured in five-year increments, tracking four key variables: Year, Life Expectancy, Population, and GDP per capita. While both nations show a clear positive correlation between wealth and longevity, the data reveals a notable divergence starting in the early 1990s (Tobias, 2009). At this point, New Zealand’s life expectancy began to rise at a steeper rate than that of the U.S., eventually reaching over 80 years by 2007 despite having a significantly lower GDP per capita than the United States.
+
+The dataset appears technically robust with no visible missingness or null values for the core metrics within the provided timeframe. The time coverage spans 55 years, offering a consistent historical perspective on how these two developed nations evolved during the latter half of the 20th century. By providing specific snapshots every five years, the data allows for the identification of specific decades where health outcomes shifted independently of economic trends.
+
+However, there are inherent limitations to what these figures can reveal about population health. Because the data relies on national averages, it cannot account for internal health disparities based on socioeconomic status, race, or geography. Furthermore, the data tracks the length of life but offers no insight into the "healthspan" or quality of life, nor can it explicitly identify the specific policy changes or social interventions that caused New Zealand to outpace the U.S. in longevity. Finally, as the coverage ends in 2007, the data cannot reflect more recent public health challenges, such as global pandemics or shifts in the modern global economy.
+
+# References 
+
+Aytemiz, L., Alpaykut, S., & Çakır, B. (2024). The long-term effect of social, educational, and health expenditures on indicators of life expectancy in OECD countries. Frontiers in Public Health, 12, 1497794. https://doi.org/10.3389/fpubh.2024.1497794
+Case, A., & Deaton, A. (2015). Rising morbidity and mortality in midlife among white non-Hispanic Americans in the 21st century. Proceedings of the National Academy of Sciences of the United States of America, 112(49), 15078–15083. https://doi.org/10.1073/pnas.1518393112
+GBD 2019 Demographics Collaborators. (2020). Global age-sex-specific fertility, mortality, healthy life expectancy (HALE), and population estimates in 204 countries and territories, 1950–2019: A comprehensive demographic analysis for the Global Burden of Disease Study 2019. The Lancet, 396(10258), 1160–1203. https://doi.org/10.1016/S0140-6736(20)30977-6
+Ho, J. Y., & Hendi, A. S. (2018). Recent trends in life expectancy across high income countries: Retrospective observational study. BMJ, 362, k2562. https://doi.org/10.1136/bmj.k2562
+Lindén, M., & Ray, D. (2017). Life expectancy effects of public and private health expenditures in OECD countries 1970–2012: Panel time series approach. Economic Analysis and Policy, 56, 101–113. https://doi.org/10.1016/j.eap.2017.06.005
+Nolte, E., & McKee, M. (2003). Measuring the health of nations: Analysis of mortality amenable to health care. BMJ, 327(7424), 1129–1133. https://doi.org/10.1136/bmj.327.7424.1129
+Papanicolas, I., Woskie, L. R., & Jha, A. K. (2018). Health care spending in the United States and other high-income countries. JAMA, 319(10), 1024–1039. https://doi.org/10.1001/jama.2018.1150
+Ray, D., & Lindén, M. (2018). Health, inequality and income: A global study using simultaneous model. Journal of Economic Structures, 7, 22. https://doi.org/10.1186/s40008-018-0121-3
+Robson, B., & Harris, R. (2007). Māori health and inequalities. The Lancet, 367(9524), 183–185. https://doi.org/10.1016/S0140-6736(07)60077-6
+Roffia, P., Bucciol, A., & Hashlamoun, S. (2023). Determinants of life expectancy at birth: A longitudinal study on OECD countries. International Journal of Health Economics and Management, 23(2), 189–212. https://doi.org/10.1007/s10754-022-09338-5
+Tobias, M., Blakely, T., Matheson, D., Rasanathan, K., & Atkinson, J. (2009). Changing trends in indigenous inequalities in mortality: Lessons from New Zealand. International Journal of Epidemiology, 38(6), 1711–1722. https://doi.org/10.1093/ije/dyp156
+Woolf, S. H., & Aron, L. (2013). The US health disadvantage relative to other high-income countries: Findings from a National Research Council/Institute of Medicine report. JAMA, 309(8), 771–772. https://doi.org/10.1001/jama.2013.91
